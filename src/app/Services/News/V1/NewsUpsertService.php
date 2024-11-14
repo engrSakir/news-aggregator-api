@@ -9,11 +9,8 @@ class NewsUpsertService
     {
         $articles = app()->make(NewsAggregatorService::class)->fetchAllArticlesAsync();
 
-        foreach ($articles as $article) {
-            Article::create($article);
-        }
+        Article::upsert($articles, ['url'], ['title', 'description', 'source', 'published_at', 'updated_at']);
 
-//        return $articles;
         return Article::all()->toArray();
     }
 }
