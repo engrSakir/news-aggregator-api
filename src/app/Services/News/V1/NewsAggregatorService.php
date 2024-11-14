@@ -5,13 +5,6 @@ use App\Connectors\News\V1\NewsConnector;
 
 class NewsAggregatorService
 {
-
-
-    /**
-     * Fetch articles from all news sources asynchronously using Laravel's HTTP client.
-     *
-     * @return array Merged articles from all sources.
-     */
     public function fetchAllArticlesAsync(): array
     {
         // Define API requests for different news sources
@@ -21,6 +14,15 @@ class NewsAggregatorService
                 'params' => [
                     'country' => 'us',
                     'apiKey' => '5d9f41ea13784fac9be4a091f8295021',
+                ],
+            ],
+            'guardian' => [
+                'url' => 'https://content.guardianapis.com/search',
+                'params' => [
+                    'order-by' => 'newest',
+                    'show-fields' => 'all',
+                    'page-size' => 10,
+                    'api-key' => 'ca371f06-7ecd-491c-ba03-23e3ae51196d',
                 ],
             ],
 //            'openNews' => [
@@ -37,15 +39,7 @@ class NewsAggregatorService
 //                    'apiKey' => config('services.newscred.key'),
 //                ],
 //            ],
-            'guardian' => [
-                'url' => 'https://content.guardianapis.com/search',
-                'params' => [
-                    'order-by' => 'newest',
-                    'show-fields' => 'all',
-                    'page-size' => 10,
-                    'api-key' => 'ca371f06-7ecd-491c-ba03-23e3ae51196d',
-                ],
-            ],
+
         ];
 
         // Perform the asynchronous requests
