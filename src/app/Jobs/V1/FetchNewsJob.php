@@ -12,8 +12,8 @@ class FetchNewsJob// implements ShouldQueue
 {
     use Dispatchable, Queueable; // Use Dispatchable here
 
-    public function handle(): array
+    public function handle()
     {
-        return (new NewsAggregatorService())->fetchAllArticlesAsync();
+        (new NewsAggregatorService())->fetchAllArticlesAsync();
     }
 }

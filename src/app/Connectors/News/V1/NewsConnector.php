@@ -3,6 +3,7 @@ namespace App\Connectors\News\V1;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Client\ConnectionException;
 use Exception;
 
 class NewsConnector
@@ -24,7 +25,9 @@ class NewsConnector
 
                     for ($page = 1; $page <= $pageCoverage; $page++) {
                         $request['params']['page'] = $page;
-                        $handles[$key][] = $pool->as("$key-$page")->get($request['url'], $request['params']);
+                        $handles[$key][] = $pool->as("$key-$page")
+                                ->timeout(60)
+                                ->get($request['url'], $request['params']);
                     }
                 }
 
@@ -56,19 +59,24 @@ class NewsConnector
         foreach ($responses as $key => $response) {
             try {
                 list($type, $page) = explode('-', $key);
-                $results[$type][$page] = $response->successful() ? $response->json() : [];
 
-                if (!$response->successful()) {
+                // Check if response is an exception due to connection issues
+                if ($response instanceof ConnectionException) {
+                    Log::error("Connection error for {$key}: " . $response->getMessage());
+                    $results[$type][$page] = []; // Fallback to an empty array
+                } elseif ($response->successful()) {
+                    $results[$type][$page] = $response->json();
+                } else {
                     Log::warning("Unsuccessful response for {$key}", [
                         'response_status' => $response->status(),
                         'response_body' => $response->body(),
                     ]);
+                    $results[$type][$page] = [];
                 }
             } catch (Exception $e) {
                 // Log the error if processing fails for a specific response
                 Log::error("Error processing response for {$key}: " . $e->getMessage(), [
                     'key' => $key,
-                    'response' => $response,
                     'exception' => $e
                 ]);
                 $results[$type][$page] = [];

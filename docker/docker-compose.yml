@@ -1,6 +1,5 @@
 services:
   nginx:
-    container_name: web-web-server
     image: nginx:latest
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -10,7 +9,6 @@ services:
       - ${HTTP_PORTS}:443
 
   php:
-    container_name: php-fpm
     build:
       context: ../
       dockerfile: ./docker/php/Dockerfile

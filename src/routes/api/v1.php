@@ -13,7 +13,7 @@ Route::post('password/reset', [AuthController::class, 'resetPassword']);
 
 Route::get('/news', function () {
     // Dispatch the job with the NewsAggregatorService injected
-    return FetchNewsJob::dispatchSync();
+    FetchNewsJob::dispatchSync();
 
 //    return response()->json(['status' => 'Job dispatched successfully']);
 });

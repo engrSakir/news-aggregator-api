@@ -5,27 +5,39 @@ use App\Connectors\News\V1\NewsConnector;
 use App\Mappers\News\V1\GuardianApiResponseMapper;
 use App\Mappers\News\V1\NewsApiResponseMapper;
 use App\Mappers\News\V1\NewsResponseMapper;
+use App\Mappers\News\V1\NyTimesApiResponseMapper;
 use App\Models\Article;
+use Illuminate\Support\Facades\Log;
 
 class NewsAggregatorService
 {
-    public function fetchAllArticlesAsync(): array
+    public function fetchAllArticlesAsync(): void
     {
         $requests = $this->getPlatformRequestInfo();
 
         $responses = (new NewsConnector())->fetchDataAsync($requests);
         $newsApiResponseArray = (new NewsApiResponseMapper())->map($responses['newsAPI']);
         $guardianApiResponseArray = (new GuardianApiResponseMapper())->map($responses['guardian']);
+        $nyTimesApiResponseArray = (new NyTimesApiResponseMapper())->map($responses['nytimes']);
 
         $mergedArticles = array_merge(
             ...array_filter([
-            $newsApiResponseArray,
-            $guardianApiResponseArray,
+                $newsApiResponseArray,
+                $guardianApiResponseArray,
+                $nyTimesApiResponseArray,
             ])
         );
 
-        Article::upsert($mergedArticles, ['url'], ['title', 'description', 'source', 'published_at', 'updated_at']);
-        return Article::latest()->get()->toArray();
+        try {
+            $upsert = Article::upsert($mergedArticles, ['url'], ['title', 'description', 'source', 'published_at', 'updated_at']);
+            Log::info("Successfully data fetch & upserting completed: ", [
+                'upsert' => $upsert
+            ]);
+        } catch (\Exception $exception) {
+            Log::error("Error upserting: " . $exception->getMessage(), [
+                'exception' => $exception
+            ]);
+        }
     }
 
     private function getPlatformRequestInfo(): array
@@ -64,6 +76,13 @@ class NewsAggregatorService
 //                    'apiKey' => config('services.newscred.key'),
 //                ],
 //            ],
+        'nytimes' => [
+                'url' => 'https://api.nytimes.com/svc/archive/v1/2024/1.json',
+                'params' => [
+//                    'region' => 'global',
+                    'api-key' => '9b7p33l8Up1gVL4fi6ibiEVgmHQ2GeEG',
+                ],
+            ],
         ];
     }
 }
