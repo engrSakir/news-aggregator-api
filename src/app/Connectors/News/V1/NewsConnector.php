@@ -1,32 +1,34 @@
 <?php
 namespace App\Connectors\News\V1;
 
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class NewsConnector
 {
-    protected $client;
-
-    public function __construct()
-    {
-        $this->client = new Client();
-    }
-
     /**
-     * Send a GET request to the specified endpoint with the given parameters.
+     * Send multiple asynchronous GET requests using Laravel HTTP client’s pool.
      *
-     * @param string $url The API endpoint URL.
-     * @param array $params Query parameters for the request.
-     * @return array The decoded JSON response.
-     * @throws \Exception
+     * @param array $requests An array of requests, each with a URL and parameters.
+     * @return array An array of decoded JSON responses.
      */
-    public function fetchData(string $url, array $params = []): array
+    public function fetchDataAsync(array $requests): array
     {
-        try {
-            $response = $this->client->get($url, ['query' => $params]);
-            return json_decode($response->getBody()->getContents(), true);
-        } catch (\Exception $e) {
-            throw new \Exception("Error fetching data: " . $e->getMessage());
+        $responses = Http::pool(function ($pool) use ($requests) {
+            $handles = [];
+
+            foreach ($requests as $key => $request) {
+                $handles[$key] = $pool->as($key)->get($request['url'], $request['params']);
+            }
+
+            return $handles;
+        });
+
+        // Process and return the responses in JSON
+        $results = [];
+        foreach ($responses as $key => $response) {
+            $results[$key] = $response->json();
         }
+
+        return $results;
     }
 }

@@ -19,35 +19,20 @@ class NewsServiceProvider extends ServiceProvider
             return new NewsConnector();
         });
 
-        // Bind each service, passing in the shared connector
-        $this->app->singleton(NewsAPIService::class, function ($app) {
-            return new NewsAPIService($app->make(NewsConnector::class));
-        });
-
-        $this->app->singleton(OpenNewsService::class, function ($app) {
-            return new OpenNewsService($app->make(NewsConnector::class));
-        });
-
-        $this->app->singleton(NewsCredService::class, function ($app) {
-            return new NewsCredService($app->make(NewsConnector::class));
-        });
-
-        $this->app->singleton(GuardianNewsService::class, function ($app) {
-            return new GuardianNewsService($app->make(NewsConnector::class));
-        });
-
-        $this->app->singleton(\App\Services\News\V2\NewsAggregatorService::class, function ($app) {
-            return new \App\Services\News\V2\NewsAggregatorService($app->make(\App\Connectors\News\V2\NewsConnector::class));
+        $this->app->singleton(\App\Services\News\V1\NewsAggregatorService::class, function ($app) {
+            return new \App\Services\News\V1\NewsAggregatorService($app->make(\App\Connectors\News\V2\NewsConnector::class));
         });
 
         // Bind the aggregator service with all individual services
         $this->app->singleton(NewsAggregatorService::class, function ($app) {
             return new NewsAggregatorService(
-                $app->make(NewsAPIService::class),
-                $app->make(OpenNewsService::class),
-                $app->make(NewsCredService::class),
-                $app->make(GuardianNewsService::class),
-                $app->make(\App\Services\News\V2\NewsAggregatorService::class),
+                [
+                    $app->make(NewsAPIService::class),
+//                    $app->make(OpenNewsService::class),
+//                    $app->make(NewsCredService::class),
+                    $app->make(GuardianNewsService::class),
+//                    $app->make(\App\Services\News\V2\NewsAggregatorService::class)
+                ]
             );
         });
     }
