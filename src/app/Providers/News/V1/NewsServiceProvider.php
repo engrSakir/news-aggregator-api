@@ -11,14 +11,6 @@ class NewsServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton(NewsUpsertService::class, function ($app) {
-            return new NewsUpsertService();
-        });
-
-        $this->app->singleton(NewsAggregatorService::class, function ($app) {
-            return new NewsAggregatorService();
-        });
-
         $this->app->singleton(NewsConnector::class, function () {
             return new NewsConnector();
         });
