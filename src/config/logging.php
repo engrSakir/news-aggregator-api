@@ -127,6 +127,13 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'connector_logs' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/connector/' . date('Y-m-d_H-i') . '.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
+
     ],
 
 ];

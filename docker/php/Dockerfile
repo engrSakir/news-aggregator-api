@@ -30,6 +30,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && pecl install redis \
     && docker-php-ext-enable redis
 
+COPY ./docker/php/php.ini /usr/local/etc/php/conf.d/custom_php.ini
+
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

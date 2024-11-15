@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\News\V1;
 
-use App\Jobs\V1\FetchNewsJob;
+use App\Jobs\News\V1\FetchNewsJob;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;

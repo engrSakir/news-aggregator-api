@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Jobs\V1;
+namespace App\Jobs\News\V1;
 
-use App\Models\Article;
 use App\Services\News\V1\NewsAggregatorService;
-use App\Services\News\V1\NewsUpsertService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 
@@ -12,7 +10,7 @@ class FetchNewsJob// implements ShouldQueue
 {
     use Dispatchable, Queueable; // Use Dispatchable here
 
-    public function handle()
+    public function handle(): void
     {
         (new NewsAggregatorService())->fetchAllArticlesAsync();
     }
