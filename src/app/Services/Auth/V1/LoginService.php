@@ -3,28 +3,23 @@
 namespace App\Services\Auth\V1;
 
 use App\Models\User;
+use App\Services\Service;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
-class LoginService
+class LoginService extends Service
 {
-    /**
-     * @throws ValidationException
-     */
-    public function handle($request): array
+    public function handle(array $requestData): array
     {
-        $user = User::where('email', $request->email)->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+        return $this->execute(function () use ($requestData) {
+            $user = User::where('email', $requestData['email'])->first();
+            if (!$user || !Hash::check($requestData['password'], $user->password)) {
+                return $this->errorResponse('The provided credentials are incorrect.', 401);
+            }
+            $token = $user->createToken('auth_token')->plainTextToken;
+            return $this->successResponse('Logged in successfully.',  [
+                'access_token' => $token,
+                'token_type' => 'Bearer',
             ]);
-        }
-
-        // Create token for the user
-        $token = $user->createToken('auth_token')->plainTextToken;
-        return [
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ];
+        });
     }
 }

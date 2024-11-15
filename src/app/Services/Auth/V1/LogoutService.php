@@ -2,11 +2,16 @@
 
 namespace App\Services\Auth\V1;
 
-class LogoutService
+use App\Models\V1\Preference;
+use App\Services\Service;
+
+class LogoutService extends Service
 {
-    public function handle($request): array
+    public function handle(): array
     {
-        $request->user()->currentAccessToken()->delete();
-        return ['message' => 'Logged out successfully.'];
+        return $this->execute(function () {
+            request()->user()->currentAccessToken()->delete();
+            return $this->successResponse('Logged out successfully.');
+        });
     }
 }

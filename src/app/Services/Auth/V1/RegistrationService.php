@@ -3,26 +3,21 @@
 namespace App\Services\Auth\V1;
 
 use App\Models\User;
+use App\Services\Service;
 use Illuminate\Support\Facades\Hash;
 
-class RegistrationService
+class RegistrationService extends Service
 {
-    /**
-     * @param $request
-     * @return array
-     */
-    public function handle($request): array
+    public function handle(array $requestData): array
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-        return [
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ];
+        return $this->execute(function () use ($requestData) {
+            $requestData['password'] = Hash::make($requestData['password']);
+            $user = User::create($requestData);
+            $token = $user->createToken('auth_token')->plainTextToken;
+            return $this->successResponse('Registration successfully done!', [
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+            ]);
+        });
     }
 }

@@ -2,20 +2,18 @@
 
 namespace App\Services\Auth\V1;
 
-use Illuminate\Http\JsonResponse;
+use App\Services\Service;
 use Illuminate\Support\Facades\Password;
 
-class PasswordResetEmailService
+class PasswordResetEmailService extends Service
 {
-    /**
-     * @param $request
-     * @return JsonResponse
-     */
-    public function handle($request): JsonResponse
+    public function handle(array $requestData): array
     {
-        $status = Password::sendResetLink($request->only('email'));
-        return $status === Password::RESET_LINK_SENT
-            ? response()->json(['message' => 'Password reset link sent.'])
-            : response()->json(['message' => 'Failed to send password reset link.'], 500);
+        return $this->execute(operation: function () use ($requestData) {
+            $status = Password::sendResetLink($requestData);
+            return $status === Password::RESET_LINK_SENT
+                ? $this->successResponse('Password reset link sent')
+                :  $this->errorResponse('Failed to send password reset link.', 500);
+        });
     }
 }

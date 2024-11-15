@@ -10,26 +10,35 @@ use App\Services\Preference\V1\PreferenceDestroyService;
 use App\Services\Preference\V1\PreferenceGetService;
 use App\Services\Preference\V1\PreferenceStoreService;
 use App\Services\Preference\V1\PreferenceUpdateService;
+use Illuminate\Http\JsonResponse;
 
 class PreferenceController extends Controller
 {
-    public function index(PreferenceGetService $service): array
+    public function index(PreferenceGetService $service): JsonResponse
     {
-        return $service->handle();
+        return $this->response(
+            data: $service->handle()
+        );
     }
 
-    public function store(PreferenceStoreRequest $request, PreferenceStoreService $service): array
+    public function store(PreferenceStoreRequest $request, PreferenceStoreService $service): JsonResponse
     {
-        return $service->handle($request->validated());
+        return $this->response(
+            data: $service->handle($request->validated())
+        );
     }
 
-    public function update(PreferenceUpdateRequest $request, $id, PreferenceUpdateService $service): array
+    public function update(PreferenceUpdateRequest $request, $id, PreferenceUpdateService $service): JsonResponse
     {
-        return $service->handle($request->validated(), $id);
+        return $this->response(
+            data: $service->handle($request->validated(), $id)
+        );
     }
 
-    public function destroy(PreferenceDestroyRequest $request, $id, PreferenceDestroyService $service): array
+    public function destroy(PreferenceDestroyRequest $request, $id, PreferenceDestroyService $service): JsonResponse
     {
-        return $service->handle($id);
+        return $this->response(
+            data: $service->handle($request->validated($id))
+        );
     }
 }

@@ -9,4 +9,5 @@ final class NewsEnum
     public const URL = 'url';
     public const SOURCE = 'source';
     public const PUBLISHED_AT = 'published_at';
+    const SOURCES = ['source', 'author', 'category'];
 }

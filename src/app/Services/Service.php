@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class Service
 {
@@ -16,17 +16,14 @@ class Service
     protected function execute(callable $operation): array
     {
         try {
-            // Execute the operation
             $data = $operation();
-
-            // Return success response
-            return $this->successResponse('Operation completed successfully', $data);
-        } catch (ModelNotFoundException $e) {
-            // Handle not found exception
-            return $this->errorResponse('Resource not found', 404);
-        } catch (Exception $e) {
-            // Handle other exceptions
-            return $this->errorResponse('An error occurred: ' . $e->getMessage(), 500);
+            if (!empty($data['code'])) {
+                return $data;
+            }
+            return $this->successResponse('Successfully done', $data);
+        } catch (Throwable $e) {
+            Log::error('An unexpected error occurred: ' . $e->getMessage(), ['exception' => $e]);
+            return $this->errorResponse('An unexpected error occurred: ' . $e->getMessage(), 500);
         }
     }
 
@@ -37,12 +34,13 @@ class Service
      * @param mixed $data
      * @return array
      */
-    protected function successResponse(string $message, $data = []): array
+    protected function successResponse(string $message, mixed $data = [], int $code = 200): array
     {
         return [
             'status' => 'success',
             'message' => $message,
             'data' => $data,
+            'code' => $code,
         ];
     }
 

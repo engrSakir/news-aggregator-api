@@ -13,61 +13,41 @@ use App\Services\Auth\V1\PasswordResetEmailService;
 use App\Services\Auth\V1\PasswordResetService;
 use App\Services\Auth\V1\RegistrationService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    /**
-     * @param RegistrationRequest $request
-     * @param RegistrationService $service
-     * @return JsonResponse
-     */
+    public function login(LoginRequest $request, LoginService $service): JsonResponse
+    {
+        return $this->response(
+            data: $service->handle($request->validated())
+        );
+    }
+
     public function register(RegistrationRequest $request, RegistrationService $service): JsonResponse
     {
-        $registerResponse = $service->handle($request);
-        return response()->json($registerResponse);
+        return $this->response(
+            data: $service->handle($request->validated())
+        );
     }
 
-    /**
-     * @throws ValidationException
-     */
-    public function login(LoginRequest $request, LoginService $service): JsonResponse|ValidationException
+    public function logout(LogoutService $service): JsonResponse
     {
-        $loginResponse = $service->handle($request);
-        return response()->json($loginResponse);
+        return $this->response(
+            data: $service->handle()
+        );
     }
 
-    /**
-     * @param Request $request
-     * @param LogoutService $service
-     * @return JsonResponse
-     */
-    public function logout(Request $request, LogoutService $service): JsonResponse
-    {
-        $logoutResponse = $service->handle($request);
-        return response()->json($logoutResponse);
-    }
-
-    /**
-     * @param PasswordResetEmailRequest $request
-     * @param PasswordResetEmailService $service
-     * @return JsonResponse
-     */
     public function sendPasswordResetLinkEmail(PasswordResetEmailRequest $request, PasswordResetEmailService $service): JsonResponse
     {
-        $resetLinkResponse = $service->handle($request);
-        return response()->json($resetLinkResponse);
+        return $this->response(
+            data: $service->handle($request->validated())
+        );
     }
 
-    /**
-     * @param PasswordResetRequest $request
-     * @param PasswordResetService $service
-     * @return JsonResponse
-     */
     public function resetPassword(PasswordResetRequest $request, PasswordResetService $service): JsonResponse
     {
-        $resetPasswordResponse = $service->handle($request);
-        return response()->json($resetPasswordResponse);
+        return $this->response(
+            data: $service->handle($request->validated())
+        );
     }
 }
