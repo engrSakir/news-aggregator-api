@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static upsert(array $mergedArticles, string[] $array, string[] $array1)
+ * @method orderBy(string $string, string $string1)
  */
 class Article extends Model
 {
