@@ -5,12 +5,11 @@ namespace App\Traits\V1;
 trait KeywordExtractor
 {
     /**
-     * Extract keywords from a given text.
-     *
-     * @param string $text The input text to extract keywords from.
-     * @param array|null $stopWords A list of words to ignore (null to use default stop words).
-     * @param int $limit The maximum number of keywords to return.
-     * @return array Extracted keywords.
+     * @param string $text
+     * @param string $returnType
+     * @param array|null $stopWords
+     * @param int $limit
+     * @return string|array
      */
     public function extractKeywords(string $text, string $returnType = 'array', ?array $stopWords = null, int $limit = 10): string|array
     {

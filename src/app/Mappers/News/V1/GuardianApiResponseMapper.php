@@ -9,7 +9,12 @@ use Carbon\Carbon;
 class GuardianApiResponseMapper
 {
     use KeywordExtractor;
-    public function map($responsePages): array
+
+    /**
+     * @param array $responsePages
+     * @return array
+     */
+    public function map(array $responsePages): array
     {
         $articles = [];
         foreach ($responsePages as $page) {

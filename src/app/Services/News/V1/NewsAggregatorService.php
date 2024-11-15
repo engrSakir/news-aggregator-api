@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Log;
 
 class NewsAggregatorService
 {
+    /**
+     * @return void
+     */
     public function fetchAllArticlesAsync(): void
     {
         $platforms = $this->getActivePlatforms();
@@ -38,6 +41,9 @@ class NewsAggregatorService
         }
     }
 
+    /**
+     * @return array
+     */
     private function getActivePlatforms(): array
     {
         $platformConfigs = config('connector.platforms.news');

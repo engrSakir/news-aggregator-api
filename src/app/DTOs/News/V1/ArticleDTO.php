@@ -14,6 +14,9 @@ class ArticleDTO
         public string $url,
     ) {}
 
+    /**
+     * @return array
+     */
     public function arrayData(): array
     {
         return [

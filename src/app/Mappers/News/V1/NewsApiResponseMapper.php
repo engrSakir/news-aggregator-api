@@ -9,7 +9,12 @@ use Carbon\Carbon;
 class NewsApiResponseMapper
 {
     use KeywordExtractor;
-    public function map($responses): array
+
+    /**
+     * @param array $responses
+     * @return array
+     */
+    public function map(array $responses): array
     {
         $articles = [];
         foreach ($responses as $response) {

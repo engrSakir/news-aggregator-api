@@ -8,7 +8,11 @@ use Illuminate\Support\Facades\Log;
 
 class NyTimesApiResponseMapper
 {
-    public function map($responses): array
+    /**
+     * @param array $responses
+     * @return array
+     */
+    public function map(array $responses): array
     {
         $articles = [];
         foreach ($responses as $response) {
@@ -29,8 +33,12 @@ class NyTimesApiResponseMapper
         return $articles;
     }
 
-    // Get only the first 10 items as comma seperated string
-    private function getKeywords($keywords): string
+    /**
+     * Get only the first 10 items as comma seperated string
+     * @param array $keywords
+     * @return string
+     */
+    private function getKeywords(array $keywords): string
     {
         $values = array_column($keywords, 'value');
         $limitedValues = array_slice($values, 0, 10);

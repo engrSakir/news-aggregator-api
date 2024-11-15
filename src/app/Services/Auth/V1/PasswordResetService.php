@@ -2,11 +2,15 @@
 
 namespace App\Services\Auth\V1;
 
-use Password;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Password;
 
 class PasswordResetService
 {
-    public function handle($request)
+    /**
+     * @param $request
+     */
+    public function handle($request): JsonResponse
     {
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),

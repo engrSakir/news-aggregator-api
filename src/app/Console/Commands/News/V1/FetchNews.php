@@ -26,7 +26,7 @@ class FetchNews extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         // Log the start time and output to terminal
         $startTime = microtime(true);

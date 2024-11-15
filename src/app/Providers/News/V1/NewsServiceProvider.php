@@ -9,7 +9,10 @@ use App\Services\News\V1\NewsAggregatorService;
 
 class NewsServiceProvider extends ServiceProvider
 {
-    public function register()
+    /**
+     * @return void
+     */
+    public function register(): void
     {
         $this->app->singleton(NewsConnector::class, function () {
             return new NewsConnector();

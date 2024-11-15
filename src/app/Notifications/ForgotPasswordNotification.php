@@ -8,10 +8,8 @@ use Illuminate\Notifications\Messages\MailMessage;
 class ForgotPasswordNotification extends ResetPasswordNotification
 {
     /**
-     * Build the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param $notifiable
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {

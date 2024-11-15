@@ -8,10 +8,12 @@ use Illuminate\Validation\ValidationException;
 
 class LoginService
 {
-    public function handle($request)
+    /**
+     * @throws ValidationException
+     */
+    public function handle($request): array
     {
         $user = User::where('email', $request->email)->first();
-
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
@@ -20,7 +22,6 @@ class LoginService
 
         // Create token for the user
         $token = $user->createToken('auth_token')->plainTextToken;
-
         return [
             'access_token' => $token,
             'token_type' => 'Bearer',
