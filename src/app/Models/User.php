@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\V1\Preference;
 use App\Notifications\ForgotPasswordNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -23,21 +25,24 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = ['name', 'email', 'password',];
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token',];
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ForgotPasswordNotification($token));
+    }
+
+    public function preferences(): HasMany
+    {
+        return $this->hasMany(Preference::class, 'user_id', 'id');
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -50,10 +55,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function sendPasswordResetNotification($token): void
-    {
-        $this->notify(new ForgotPasswordNotification($token));
     }
 }
