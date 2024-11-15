@@ -28,11 +28,11 @@ class NewsAggregatorService
 
         try {
             $upsert = Article::upsert($mergedArticles, ['url'], ['title', 'description', 'source', 'published_at', 'updated_at']);
-            Log::info("Successfully data fetch & upserting completed: ", [
-                'upsert' => $upsert
+            Log::info("Successfully data fetch & upsert completed: ", [
+                'affected rows' => $upsert
             ]);
         } catch (\Exception $exception) {
-            Log::error("Error upserting: " . $exception->getMessage(), [
+            Log::error("Error upsert: " . $exception->getMessage(), [
                 'exception' => $exception
             ]);
         }
