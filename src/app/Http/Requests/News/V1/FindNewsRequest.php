@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Preference\V1;
+namespace App\Http\Requests\News\V1;
 
-use App\Models\V1\Preference;
+use App\Models\V1\Article;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
-class PreferenceStoreRequest extends FormRequest
+class FindNewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +24,7 @@ class PreferenceStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'type' => ['required', 'string', 'max:10', Rule::in(Preference::TYPES)],
-            'value' => 'required|string|max:255',
-        ];
+        return [];
     }
 
     /**
@@ -40,13 +36,8 @@ class PreferenceStoreRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator) {
-            $exists = Preference::where('user_id', auth()->id())
-                ->where('type', $this->input('type'))
-                ->where('value', $this->input('value'))
-                ->exists();
-
-            if ($exists) {
-                $validator->errors()->add('preference', 'This preference already exists.');
+            if (!Article::whereId($this->route('id'))->exists()) {
+                $validator->errors()->add('id', 'Article not found');
             }
         });
     }

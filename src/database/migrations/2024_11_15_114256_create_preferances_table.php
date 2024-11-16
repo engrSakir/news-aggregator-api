@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->index()->constrained('users', 'id');
             $table->string('type');
             $table->string('value');
+            $table->index(['user_id', 'value']);
             $table->timestamps();
         });
     }
