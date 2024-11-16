@@ -21,7 +21,7 @@ class GetNewsService extends Service
         $query->select('id', 'title', 'category', 'author', 'published_at', 'keywords', 'title', 'description', 'url');
         if (!empty($requestData['preference'])) {
             $preferences = $this->getQueryPreference();
-            foreach ($preferences ?? [] as $key => $values) {
+            foreach ($preferences as $key => $values) {
                 if (!empty($values)) {
                     $query->orWhereIn($key, $values);
                 }
@@ -50,10 +50,7 @@ class GetNewsService extends Service
 
     private function getQueryPreference(): array
     {
-        // Fetch preferences from the service
         $preferences = (new PreferenceGetService())->handle();
-
-        // Transform preferences into a grouped structure
         return collect($preferences['data'])->groupBy('type')
             ->map(fn($items) => $items->pluck('value')->all())
             ->toArray();
