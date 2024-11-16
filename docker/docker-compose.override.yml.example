@@ -7,19 +7,6 @@ services:
     networks:
       - news_aggregator_net
 
-  adminer:
-    image: adminer:4.8.1
-    environment:
-      ADMINER_DESIGN: nette
-      ADMINER_DEFAULT_SERVER: mysql
-      ADMINER_PLUGINS: "tables-filter tinymce"
-    depends_on:
-      - mysql
-    ports:
-      - ${ADMINER_PORT}:8080
-    networks:
-      - news_aggregator_net
-
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
