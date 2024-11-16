@@ -11,7 +11,7 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanct
 Route::post('password/email', [AuthController::class, 'sendPasswordResetLinkEmail'])->name('password.email');
 Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('password.reset');
 
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'throttle:30,1']], function () {
     Route::resource('preferences', PreferenceController::class)
         ->only(['index', 'store', 'update', 'destroy'])
         ->names('preferences');
