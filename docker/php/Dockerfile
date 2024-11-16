@@ -1,36 +1,42 @@
-# Use the official PHP 8.2 image with FPM
+# Use the official PHP 8.3 image with FPM
 FROM php:8.3-fpm
 
+# Metadata
 LABEL maintainer="Md. Sakir Ahmed <engr.sakir@gmail.com>"
 
-# Install system dependencies and PHP extensions
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev \
-    libzip-dev \
-    unzip \
-    libicu-dev \
+# Install system dependencies, PHP extensions
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    autoconf \
+    build-essential \
+    curl \
     g++ \
-    libonig-dev \
-    libcurl4-openssl-dev \
-    libssl-dev \
     git \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd \
-    && docker-php-ext-install mysqli \
-    && docker-php-ext-install pdo pdo_mysql \
-    && docker-php-ext-install intl \
-    && docker-php-ext-install zip \
+    libcurl4-openssl-dev \
+    libfreetype6-dev \
+    libicu-dev \
+    libjpeg-dev \
+    libonig-dev \
+    libpng-dev \
+    libssl-dev \
+    libtool \
+    libzip-dev \
+    pkg-config \
+    unzip \
+    vim \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+        gd \
+        intl \
+        mysqli \
+        pdo \
+        pdo_mysql \
+        zip \
+    && pecl channel-update pecl.php.net \
     && pecl install redis \
-    && docker-php-ext-enable redis
+    && docker-php-ext-enable redis \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/pear
 
-COPY ./docker/php/php.ini /usr/local/etc/php/conf.d/custom_php.ini
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -41,13 +47,17 @@ WORKDIR /var/www
 # Copy application code
 COPY ./src .
 
-RUN chown -R www-data:www-data /var/www
+# Ensure proper permissions
+RUN chown -R www-data:www-data /var/www && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
+# Copy custom PHP configuration
+COPY ./docker/php/php.ini /usr/local/etc/php/conf.d/custom_php.ini
+
+# Install application dependencies as www-data
 USER www-data
+RUN composer install --classmap-authoritative --optimize-autoloader
 
-# Install application dependencies
-RUN composer install
-
+# Run Laravel commands
 USER root
 
 # Expose port 9000 for the PHP-FPM server

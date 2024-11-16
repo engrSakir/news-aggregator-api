@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use App\Jobs\News\V1\FetchNewsJob;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
+Schedule::job(new FetchNewsJob())->everyFiveMinutes();
+
+Schedule::call(function () {
+    \Illuminate\Support\Facades\Log::info("Scheduler is working");
+})->everyMinute();
