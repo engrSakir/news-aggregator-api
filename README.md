@@ -130,11 +130,11 @@ Follow these steps to set up the project:
 ## **Accessing the Application**
 
 - Open your browser and navigate to:
-- **App**: `http://localhost:<NGINX_HTTP_PORT>` (Default: [localhost:8101](http://localhost:8101))
-- **phpMyAdmin**: `http://localhost:<PHP_MYADMIN_PORT>` (Default: [localhost:8101](http://localhost:8102))
-- **RedisInsight**: `http://localhost:<REDIS_INSIGHT_PORT>` (Default: [localhost:8101](http://localhost:8103))
+- **App**: `http://localhost:<NGINX_HTTP_PORT>` [localhost:8101](http://localhost:8101)
+- **phpMyAdmin**: `http://localhost:<PHP_MYADMIN_PORT>` [localhost:8101](http://localhost:8102)
+- **RedisInsight**: `http://localhost:<REDIS_INSIGHT_PORT>` [localhost:8101](http://localhost:8103) (put `redis` host input field, rest of fields as is)
 
-You you change ports in `.env` replace `<NGINX_HTTP_PORT>`, `<PHP_MYADMIN_PORT>` and `<REDIS_INSIGHT_PORT>`, with the
+If you change ports in `.env` replace `<NGINX_HTTP_PORT>`, `<PHP_MYADMIN_PORT>` and `<REDIS_INSIGHT_PORT>`, with the
 port you configured in `docker/.env`.
 
 ---
