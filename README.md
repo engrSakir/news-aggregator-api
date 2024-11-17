@@ -186,7 +186,7 @@ port you configured in `docker/.env`.
 ### **Permission Issues**
  - If you encounter issues with `storage` or `bootstrap` permissions:
  ```bash
-    docker-compose exec php bash -c "chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache"
+    docker-compose exec php bash -c "chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache"
    ```
 
 ### **View Logs**
