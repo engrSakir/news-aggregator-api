@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Cache;
-use DB;
 use Illuminate\Http\JsonResponse;
-use Log;
-use Queue;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
 
 class AppController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         return response()->json([
             'status' => 'success',
@@ -26,7 +26,7 @@ class AppController extends Controller
     {
         try {
             $db = DB::connection()->getPdo() ? 'connected' : 'disconnected';
-            $cache = Cache::get('health-check', true) ? 'available' : 'unavailable';
+            $cache = Cache::get('health-check', false) ? 'available' : 'unavailable';
             $queue = Queue::size() >= 0 ? 'running' : 'stopped';
             $data = [
                 'timestamp' => now(),
