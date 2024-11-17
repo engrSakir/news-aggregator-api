@@ -106,7 +106,9 @@ Follow these steps to set up the project:
       ```bash
       docker-compose up -d
       ```
+      - **Note**: If you found docker-compose not found related issue use `docker compose` inside of `docker-compose`
 
+   
 5. **Run Database Migrations**:
     - Access the PHP container:
       ```bash
@@ -118,7 +120,7 @@ Follow these steps to set up the project:
       ```
     - **Optional**: Fetch news manually:
       ```bash
-      php artisan fetch-news
+      php artisan app:fetch-news
       ```
     - Exit the container:
       ```bash
@@ -131,8 +133,8 @@ Follow these steps to set up the project:
 
 - Open your browser and navigate to:
 - **App**: `http://localhost:<NGINX_HTTP_PORT>` [localhost:8101](http://localhost:8101)
-- **phpMyAdmin**: `http://localhost:<PHP_MYADMIN_PORT>` [localhost:8101](http://localhost:8102)
-- **RedisInsight**: `http://localhost:<REDIS_INSIGHT_PORT>` [localhost:8101](http://localhost:8103) (put `redis` host input field, rest of fields as is)
+- **phpMyAdmin**: `http://localhost:<PHP_MYADMIN_PORT>` [localhost:8103](http://localhost:8103)
+- **RedisInsight**: `http://localhost:<REDIS_INSIGHT_PORT>` [localhost:8102](http://localhost:8102) (put `redis` host input field, rest of fields as is)
 
 If you change ports in `.env` replace `<NGINX_HTTP_PORT>`, `<PHP_MYADMIN_PORT>` and `<REDIS_INSIGHT_PORT>`, with the
 port you configured in `docker/.env`.
