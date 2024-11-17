@@ -1,93 +1,194 @@
-# News Aggregator API
+# **News Aggregator API**
 
+The **News Aggregator API** is a Laravel-based backend service that fetches news articles from multiple sources,
+provides user authentication, allows users to manage preferences, and delivers a personalized news feed. This project is
+fully containerized using **Docker** to simplify setup and development.
 
+---
 
-## Getting started
+## **Features**
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- **User Authentication**: Register, login, logout, and password reset using API tokens (Laravel Sanctum).
+- **Article Management**: Fetch articles, search, filter, and retrieve detailed article data.
+- **User Preferences**: Save preferences for sources, categories, and authors to get a personalized feed.
+- **Data Aggregation**: Automatically fetch articles from multiple news APIs.
+- **Scheduler**: News fetching runs every 5 minutes, or you can fetch manually.
+- **API Documentation**: Comprehensive documentation for all endpoints (Swagger/OpenAPI).
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+---
 
-## Add your files
+## **Project Structure**
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Key directories and files:
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/md.sakir/news-aggregator-api.git
-git branch -M main
-git push -uf origin main
+news-aggregator-api/
+├── docker/
+│   ├── .env.example                     # Docker environment variables
+│   ├── docker-compose.yml               # Main Docker configuration
+│   ├── docker-compose.override.yml.example # Optional services configuration
+│   ├── .envs/
+│   │   ├── app.env.example              # App environment variables
+│   │   ├── mysql.env.example            # MySQL environment variables
+│   │   ├── redis.env.example            # Redis environment variables
+│   └── nginx/
+│       └── default.conf                 # NGINX configuration
+├── src/
+│   ├── app/                             # Laravel application core
+│   ├── database/                        # Migrations and seeders
+│   ├── routes/                          # API routes
+│   ├── storage/                         # Logs and compiled files
+│   ├── tests/                           # Unit and feature tests
+│   ├── artisan                          # Artisan CLI
+│   ├── composer.json                    # Dependencies
+│   ├── README.md                        # Documentation
 ```
 
-## Integrate with your tools
+<sub>**File location**: `src/` contains Laravel project core files. & `docker/` contains Docker</sub>
 
-- [ ] [Set up project integrations](https://gitlab.com/md.sakir/news-aggregator-api/-/settings/integrations)
+---
 
-## Collaborate with your team
+## **Getting Started**
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### **Prerequisites**
 
-## Test and Deploy
+1. Install **Docker** and **Docker Compose**.
+2. Clone this repository:
+   ```bash
+   git clone https://gitlab.com/md.sakir/news-aggregator-api
+   cd news-aggregator-api
+   ```
 
-Use the built-in continuous integration in GitLab.
+---
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### **Setup**
 
-***
+Follow these steps to set up the project:
 
-# Editing this README
+1. **Configure Environment Files**:
+    - Navigate to the `docker` directory:
+      ```bash
+      cd docker
+      ```
+    - Copy the example `.env` file:
+      ```bash
+      cp .env.example .env && \
+      cp .envs/app.env.example .envs/app.env && \
+      cp .envs/mysql.env.example .envs/mysql.env && \
+      cp .envs/redis.env.example .envs/redis.env && \
+      cp docker-compose.override.yml.example docker-compose.override.yml
+      ```
+    - Edit `docker/.env` and set up port numbers:
+       ```bash
+       nano .env
+       ```
+    - (optional) If you want to change ports set available ports & composer files in `.env` file :
+       ```env
+      COMPOSE_PROJECT_NAME="news-aggregator"
+      
+      #Use ; for windows and : for linux os
+      COMPOSE_FILE="docker-compose.yml:docker-compose.override.yml"
+        
+      NGINX_HTTP_PORT=8101
+      REDIS_INSIGHT=8102
+      PHP_MYADMIN_PORT=8103
+       ```
+        - **Required**: Set the `NGINX_HTTP_PORT` for accessing the application from your browser or api client like
+          postman.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
 
-## Suggestions for a good README
+2. **Build and Start Services**:
+    - Build Docker containers:
+      ```bash
+      docker-compose build
+      ```
+    - Start all services:
+      ```bash
+      docker-compose up -d
+      ```
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+5. **Run Database Migrations**:
+    - Access the PHP container:
+      ```bash
+      docker-compose exec php bash
+      ```
+    - Install Dependencies and Seed Database:
+      ```bash
+      composer install && php artisan migrate:fresh --seed
+      ```
+    - **Optional**: Fetch news manually:
+      ```bash
+      php artisan fetch-news
+      ```
+    - Exit the container:
+      ```bash
+      exit
+      ```
 
-## Name
-Choose a self-explaining name for your project.
+---
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## **Accessing the Application**
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+- Open your browser and navigate to:
+- **App**: `http://localhost:<NGINX_HTTP_PORT>` (Default: [localhost:8101](http://localhost:8101))
+- **phpMyAdmin**: `http://localhost:<PHP_MYADMIN_PORT>` (Default: [localhost:8101](http://localhost:8102))
+- **RedisInsight**: `http://localhost:<REDIS_INSIGHT_PORT>` (Default: [localhost:8101](http://localhost:8103))
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+You you change ports in `.env` replace `<NGINX_HTTP_PORT>`, `<PHP_MYADMIN_PORT>` and `<REDIS_INSIGHT_PORT>`, with the
+port you configured in `docker/.env`.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+---
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## **How It Works**
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### **Automatic News Fetching**
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- The system fetches news automatically every 5 minutes via Laravel's scheduler.
+- Logs are saved in:
+    - `storage/logs/connector/<date-time>.log`
+    - `storage/logs/laravel.log`
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+  <sub>**File location**: `storage/logs/` in `src/`</sub>
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+### **Manual News Fetching**
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+- Fetch news manually by running:
+  ```bash
+  docker-compose exec php bash
+  php artisan:fetch-news
+  exit
+  ```
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+---
 
-## License
-For open source projects, say how it is licensed.
+## **API Documentation**
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- Access the API documentation at:
+  ```
+  http://localhost:<NGINX_HTTP_PORT>/documentation/api/v1
+  ```
+
+---
+
+## **Stopping Services**
+
+ - To stop all services, use:
+    ```bash
+     docker-compose down
+    ```
+
+---
+
+## **Troubleshooting**
+
+### **Permission Issues**
+ - If you encounter issues with `storage` or `bootstrap` permissions:
+ ```bash
+    docker-compose exec php bash -c "chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache"
+   ```
+
+### **View Logs**
+- Read log without enter php container:
+   ```bash
+    docker-compose exec php tail -f /var/www/storage/logs/laravel.log
+     ```
