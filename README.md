@@ -78,7 +78,7 @@ Follow these steps to set up the project:
       cp .envs/redis.env.example .envs/redis.env && \
       cp docker-compose.override.yml.example docker-compose.override.yml
       ```
-    - Edit `docker/.env` and set up port numbers:
+    - (optional) Edit `docker/.env` and set up port numbers:
        ```bash
        nano .env
        ```
@@ -133,6 +133,7 @@ Follow these steps to set up the project:
 
 - Open your browser and navigate to:
 - **App**: `http://localhost:<NGINX_HTTP_PORT>` [localhost:8101](http://localhost:8101)
+- **API Docs**: `http://localhost:<NGINX_HTTP_PORT>/api/documentation` [localhost:8101/api/documentation](http://localhost:8101/api/documentation)
 - **phpMyAdmin**: `http://localhost:<PHP_MYADMIN_PORT>` [localhost:8103](http://localhost:8103)
 - **RedisInsight**: `http://localhost:<REDIS_INSIGHT_PORT>` [localhost:8102](http://localhost:8102) (put `redis` host input field, rest of fields as is)
 
@@ -163,12 +164,13 @@ port you configured in `docker/.env`.
 
 ---
 
-## **API Documentation**
+## **Swagger API Documentation**
 
 - Access the API documentation at:
   ```
-  http://localhost:<NGINX_HTTP_PORT>/documentation/api/v1
+  http://localhost:<NGINX_HTTP_PORT>/api/documentation
   ```
+  - [localhost:8101/api/documentation](http://localhost:8101/api/documentation)
 
 ---
 

@@ -17,7 +17,7 @@ class AppController extends Controller
             'data' => [
                 'message' => 'Welcome to the ' . config('app.name'),
                 'version' => '1.0.0',
-                'documentation_url' => 'https://docs.example.com'
+                'documentation_url' => 'http://localhost:8101/api/documentation'
             ]
         ], 200);
     }
@@ -26,7 +26,7 @@ class AppController extends Controller
     {
         try {
             $db = DB::connection()->getPdo() ? 'connected' : 'disconnected';
-            $cache = Cache::get('health-check', false) ? 'available' : 'unavailable';
+            $cache = Cache::set('health-check', true) ? 'available' : 'unavailable';
             $queue = Queue::size() >= 0 ? 'running' : 'stopped';
             $data = [
                 'timestamp' => now(),
