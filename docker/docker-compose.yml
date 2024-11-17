@@ -17,6 +17,7 @@ services:
     build:
       context: ../
       dockerfile: ./docker/php/Dockerfile
+    image: news-aggregator-app:latest
     env_file:
       - .envs/app.env
     volumes:
@@ -48,9 +49,7 @@ services:
 
   # Laravel Worker
   queue-worker:
-    build:
-      context: ../
-      dockerfile: ./docker/php/Dockerfile
+    image: news-aggregator-app:latest
     env_file:
       - .envs/app.env
     restart: unless-stopped
@@ -65,9 +64,7 @@ services:
 
   # Laravel Scheduler
   scheduler:
-    build:
-      context: ../
-      dockerfile: ./docker/php/Dockerfile
+    image: news-aggregator-app:latest
     env_file:
       - .envs/app.env
     restart: unless-stopped
