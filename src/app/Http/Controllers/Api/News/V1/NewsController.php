@@ -16,7 +16,7 @@ class NewsController extends Controller
         return $this->response($service->handle($request->validated()));
     }
 
-    public function find(FindNewsRequest $request, FindNewsService $service, $id): JsonResponse
+    public function show(FindNewsRequest $request, FindNewsService $service, $id): JsonResponse
     {
         return $this->response($service->handle($id));
     }

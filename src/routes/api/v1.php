@@ -16,7 +16,7 @@ Route::group(['middleware' => ['auth:sanctum', 'throttle:30,1']], function () {
         ->only(['index', 'store', 'update', 'destroy'])
         ->names('preferences');
     Route::get('news', [NewsController::class, 'index'])->name('news.index');
-    Route::get('news/{id}', [NewsController::class, 'find'])->name('news.find');
+    Route::get('news/{id}', [NewsController::class, 'show'])->name('news.show');
 });
 
 

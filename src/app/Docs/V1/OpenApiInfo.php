@@ -2,8 +2,6 @@
 
 namespace App\Docs\V1;
 
-use OpenApi\Annotations as OA;
-
 /**
  * @OA\Info(
  *     title="News Aggregator API - V1",
@@ -23,6 +21,14 @@ use OpenApi\Annotations as OA;
  *     description="Version 1 - Local development server"
  * )
  *
+ * @OA\SecurityScheme(
+ *      securityScheme="bearerAuth",
+ *      type="http",
+ *      scheme="bearer",
+ *      bearerFormat="JWT",
+ *      description="Use the Bearer token provided by Sanctum to authenticate requests."
+ *  )
+ *
  * @OA\Tag(
  *     name="Authentication",
  *     description="Endpoints related to user authentication"
@@ -31,14 +37,6 @@ use OpenApi\Annotations as OA;
  * @OA\Tag(
  *     name="News",
  *     description="Endpoints related to news articles"
- * )
- *
- * @OA\SecurityScheme(
- *     securityScheme="sanctum",
- *     type="http",
- *     scheme="bearer",
- *     bearerFormat="JWT",
- *     description="Use the Bearer token provided by Sanctum to authenticate requests."
  * )
  *
  */

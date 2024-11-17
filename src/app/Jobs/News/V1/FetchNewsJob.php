@@ -3,12 +3,11 @@
 namespace App\Jobs\News\V1;
 
 use App\Services\News\V1\NewsAggregatorService;
-use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class FetchNewsJob// implements ShouldQueue
+class FetchNewsJob
 {
-    use Dispatchable, Queueable; // Use Dispatchable here
+    use Dispatchable;
 
     /**
      * @return void
