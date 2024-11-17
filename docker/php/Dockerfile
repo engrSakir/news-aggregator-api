@@ -1,4 +1,4 @@
-# Use the official PHP 8.3 image with FPM
+# Base image
 FROM php:8.3-fpm
 
 # Metadata
@@ -42,28 +42,15 @@ WORKDIR /var/www
 
 # Copy application code
 COPY ./src .
+COPY ./docker/php/php.ini /usr/local/etc/php/conf.d/custom_php.ini
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+# Copy entrypoint script
+COPY ./docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Install dependencies
-USER www-data
-RUN if [ "$BUILD_MODE" = "prod" ]; then \
-    composer install --no-dev --optimize-autoloader; \
-else \
-    composer install; \
-fi
+# Set entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-# Laravel-specific optimizations for production
-USER root
-RUN if [ "$BUILD_MODE" = "prod" ]; then \
-    php artisan config:cache && php artisan route:cache; \
-else \
-    echo "Skipping Laravel cache optimizations in development mode"; \
-fi
-
-# Expose port for PHP-FPM
-EXPOSE 9000
-
-# Start PHP-FPM
+# CMD defines the default process to run
 CMD ["php-fpm"]
+
