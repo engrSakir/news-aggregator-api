@@ -38,7 +38,7 @@ class PreferenceController extends Controller
     public function destroy(PreferenceDestroyRequest $request, $id, PreferenceDestroyService $service): JsonResponse
     {
         return $this->response(
-            data: $service->handle($request->validated($id))
+            data: $service->handle($id)
         );
     }
 }

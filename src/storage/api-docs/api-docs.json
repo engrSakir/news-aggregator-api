@@ -978,6 +978,392 @@
                     }
                 ]
             }
+        },
+        "/preferences/{id}": {
+            "put": {
+                "tags": [
+                    "Preferences"
+                ],
+                "summary": "Update a specific preference",
+                "operationId": "9a70e6b132dad20835901c88c8830395",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the preference to update.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type",
+                                    "value"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "description": "The updated type of the preference.",
+                                        "type": "string",
+                                        "example": "category"
+                                    },
+                                    "value": {
+                                        "description": "The updated value of the preference.",
+                                        "type": "string",
+                                        "example": "science"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Preference updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Preference updated successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "category"
+                                                },
+                                                "value": {
+                                                    "type": "string",
+                                                    "example": "science"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Preference not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Preference not found."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Preferences"
+                ],
+                "summary": "Delete a specific preference",
+                "operationId": "0535e0806efe3592c3dd0f4fc3c3f901",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the preference to delete.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Preference deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Preference deleted successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Preference not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Preference not found."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/preferences": {
+            "get": {
+                "tags": [
+                    "Preferences"
+                ],
+                "summary": "Retrieve a list of preferences",
+                "operationId": "de44db4591e5baa485737cbfd5d52dce",
+                "responses": {
+                    "200": {
+                        "description": "List of preferences retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Preferences retrieved successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "example": "category"
+                                                    },
+                                                    "value": {
+                                                        "type": "string",
+                                                        "example": "technology"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Missing or invalid Bearer token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized access."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Preferences"
+                ],
+                "summary": "Create a new preference",
+                "operationId": "beaaae8d1887adc43569a8a58f2d822f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type",
+                                    "value"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "description": "The type of the preference.",
+                                        "type": "string",
+                                        "example": "category"
+                                    },
+                                    "value": {
+                                        "description": "The value of the preference.",
+                                        "type": "string",
+                                        "example": "technology"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Preference created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Preference created successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "category"
+                                                },
+                                                "value": {
+                                                    "type": "string",
+                                                    "example": "technology"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "type": {
+                                                        "type": "string",
+                                                        "example": "The type field is required."
+                                                    },
+                                                    "value": {
+                                                        "type": "string",
+                                                        "example": "The value field is required."
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -998,6 +1384,10 @@
         {
             "name": "News",
             "description": "Endpoints related to news articles"
+        },
+        {
+            "name": "Preferences",
+            "description": "Preferences"
         }
     ]
 }
