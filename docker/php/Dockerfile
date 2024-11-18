@@ -42,7 +42,13 @@ WORKDIR /var/www
 
 # Copy application code
 COPY ./src .
-COPY ./docker/php/php.ini /usr/local/etc/php/conf.d/custom_php.ini
+
+# Install Laravel dependencies
+RUN composer install --optimize-autoloader --no-dev
+
+# Set permissions for Laravel
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 # Copy entrypoint script
 COPY ./docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -53,4 +59,3 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # CMD defines the default process to run
 CMD ["php-fpm"]
-
