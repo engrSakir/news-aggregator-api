@@ -31,8 +31,13 @@ news-aggregator-api/
 │   │   ├── app.env.example              # App environment variables
 │   │   ├── mysql.env.example            # MySQL environment variables
 │   │   ├── redis.env.example            # Redis environment variables
-│   └── nginx/
-│       └── default.conf                 # NGINX configuration
+│   ├── nginx/
+│   │   ├── default.conf                 # NGINX configuration
+│   │   └── Dockerfile                   # NGINX Dockerfile
+│   ├── php/
+│       ├── Dockerfile                   # PHP Dockerfile
+│       ├── php.ini                      # PHP configuration file
+│       ├── entrypoint.sh                # PHP Entrypoint script
 ├── src/
 │   ├── app/                             # Laravel application core
 │   ├── database/                        # Migrations and seeders
@@ -114,9 +119,9 @@ Follow these steps to set up the project:
       ```bash
       docker-compose exec php bash
       ```
-    - Install Dependencies and Seed Database:
+    - Seed Database:
       ```bash
-      composer install && php artisan migrate:fresh --seed
+      php artisan migrate:fresh --seed
       ```
     - **Optional**: Fetch news manually:
       ```bash
