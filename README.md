@@ -34,10 +34,10 @@ news-aggregator-api/
 │   ├── nginx/
 │   │   ├── default.conf                 # NGINX configuration
 │   │   └── Dockerfile                   # NGINX Dockerfile
-│   ├── php/
+│   └── php/
 │       ├── Dockerfile                   # PHP Dockerfile
 │       ├── php.ini                      # PHP configuration file
-│       ├── entrypoint.sh                # PHP Entrypoint script
+│       └── entrypoint.sh                # PHP Entrypoint script
 ├── src/
 │   ├── app/                             # Laravel application core
 │   ├── database/                        # Migrations and seeders
@@ -46,7 +46,7 @@ news-aggregator-api/
 │   ├── tests/                           # Unit and feature tests
 │   ├── artisan                          # Artisan CLI
 │   ├── composer.json                    # Dependencies
-│   ├── README.md                        # Documentation
+│   └── README.md                        # Documentation
 ```
 
 <sub>**File location**: `src/` contains Laravel project core files. & `docker/` contains Docker</sub>
