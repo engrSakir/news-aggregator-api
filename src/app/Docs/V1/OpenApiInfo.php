@@ -18,8 +18,18 @@ namespace App\Docs\V1;
  *
  * @OA\Server(
  *     url="http://localhost:8101/api/v1",
- *     description="Version 1 - Local development server"
+ *     description="Version 1 - Local development default server"
  * )
+ *
+ * @OA\Server(
+ *      url="{customUrl}",
+ *      description="Customizable Server URL",
+ *      @OA\ServerVariable(
+ *          serverVariable="customUrl",
+ *          default="http://example.com/api/v1",
+ *          description="Custom API Base URL (include /api/v1)"
+ *      )
+ *  )
  *
  * @OA\SecurityScheme(
  *      securityScheme="bearerAuth",

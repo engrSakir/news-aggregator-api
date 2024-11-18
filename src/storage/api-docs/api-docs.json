@@ -15,7 +15,17 @@
     "servers": [
         {
             "url": "http://localhost:8101/api/v1",
-            "description": "Version 1 - Local development server"
+            "description": "Version 1 - Local development default server"
+        },
+        {
+            "url": "{customUrl}",
+            "description": "Customizable Server URL",
+            "variables": {
+                "customUrl": {
+                    "default": "http://example.com/api/v1",
+                    "description": "Custom API Base URL (include /api/v1)"
+                }
+            }
         }
     ],
     "paths": {
