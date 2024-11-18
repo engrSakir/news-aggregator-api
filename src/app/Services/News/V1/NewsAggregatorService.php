@@ -16,7 +16,7 @@ class NewsAggregatorService
     public function fetchAllArticlesAsync(): void
     {
         $platforms = $this->getActivePlatforms();
-        $responses = (new NewsConnector())->fetchDataAsync($platforms);
+        $responses = app(NewsConnector::class)->fetchDataAsync($platforms);
         $newsApiResponseArray = (new NewsApiResponseMapper())->map($responses['newsapi'] ?? []);
         $guardianApiResponseArray = (new GuardianApiResponseMapper())->map($responses['guardianapis'] ?? []);
         $nyTimesApiResponseArray = (new NyTimesApiResponseMapper())->map($responses['nytimes'] ?? []);
